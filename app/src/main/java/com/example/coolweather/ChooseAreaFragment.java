@@ -1,5 +1,6 @@
 package com.example.coolweather;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -89,13 +90,29 @@ public class ChooseAreaFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (currentLevel == LEVEL_PROVINCE) {
-                    selectedProvince = provinceList.get(i);
-                    queryCities();
-                } else if (currentLevel == LEVEL_CITY) {
-                    selectedCity = cityList.get(i);
-                    queryCounties();
+
+                switch (currentLevel) {
+                    case LEVEL_PROVINCE:
+                        selectedProvince = provinceList.get(i);
+                        queryCities();
+                        break;
+                    case LEVEL_CITY:
+                        selectedCity = cityList.get(i);
+                        queryCounties();
+                        break;
+                    case LEVEL_COUNTY:
+
+                        String weatherId = countyList.get(i).getWeatherId();
+                        Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                        intent.putExtra("weather_id", weatherId);
+                        startActivity(intent);
+                        getActivity().finish();
+
+                        break;
+                    default:
+                        break;
                 }
+
             }
         });
 
