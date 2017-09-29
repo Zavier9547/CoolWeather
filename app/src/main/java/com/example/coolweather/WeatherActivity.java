@@ -6,10 +6,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -33,6 +36,10 @@ import okhttp3.Response;
  */
 
 public class WeatherActivity extends AppCompatActivity {
+
+    public DrawerLayout drawerLayout;
+
+    private Button navButton;
 
     public SwipeRefreshLayout swipeRefreshLayout;
 
@@ -99,6 +106,13 @@ public class WeatherActivity extends AppCompatActivity {
             }
         });
 
+        navButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
     }
 
     private void transparentStatusBar() {
@@ -153,6 +167,7 @@ public class WeatherActivity extends AppCompatActivity {
                     public void run() {
                         Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_SHORT)
                                 .show();
+                        swipeRefreshLayout.setRefreshing(false);
                     }
                 });
 
@@ -250,6 +265,9 @@ public class WeatherActivity extends AppCompatActivity {
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setColorSchemeColors(R.color.colorPrimary);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navButton = (Button) findViewById(R.id.nav_button);
 
         bingPicImg = (ImageView) findViewById(R.id.bing_pic_img);
 
